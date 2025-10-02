@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="bar">
+      <h1 style="margin:0">Login</h1>
+      <nav>
+        <a href="index.html">CRUD</a>
+        <a href="report.html">Reporte</a>
+      </nav>
+    </header>
+
+    <main class="page-center">
+      <form id="loginForm" class="form-card">
+        <div class="form-grid">
+          <input name="username" placeholder="Usuario" required />
+          <input name="password" type="password" placeholder="Contraseña" required />
+          <div class="actions-row">
+            <button type="submit" class="btn">Ingresar</button>
+            <a href="register.html" class="btn secondary">Crear cuenta</a>
+          </div>
+        </div>
+      </form>
+    </main>
+  </div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const payload = Object.fromEntries(fd.entries());
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.setItem('token', data.token);
+        location.href = 'index.html';
+      } else {
+        alert(data.error || 'Error de login');
+      }
+    });
+  </script>
+</body>
+</html>

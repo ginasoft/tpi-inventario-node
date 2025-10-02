@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "username": "admin",
+    "passwordHash": "$2b$10$CjEhcOFnh/vr6/ek5fmYQOEfE4/5retl3MfFtLsUodczWmqmAXecK"
+  },
+  {
+    "id": 2,
+    "username": "admin2",
+    "password": "123abc"
+  },
+  {
+    "id": 3,
+    "username": "abc",
+    "password": "123"
+  },
+  {
+    "id": 4,
+    "username": "abc123",
+    "password": "abc123"
+  }
+]

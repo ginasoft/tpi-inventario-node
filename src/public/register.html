@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Registro</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="bar">
+      <h1 style="margin:0">Registro</h1>
+      <nav>
+        <a href="index.html">CRUD</a>
+        <a href="report.html">Reporte</a>
+      </nav>
+    </header>
+
+    <main class="page-center">
+      <form id="registerForm" class="form-card">
+        <div class="form-grid">
+          <input name="username" placeholder="Usuario" required />
+          <input name="password" type="password" placeholder="Contraseña" required />
+          <div class="actions-row">
+            <button type="submit" class="btn">Registrar</button>
+            <button type="button" class="btn secondary" id="backBtn">Atrás</button>
+          </div>
+        </div>
+      </form>
+
+      <pre id="result" class="form-card output" style="margin-top:16px;"></pre>
+    </main>
+  </div>
+
+<script>
+  const form = document.getElementById('registerForm');
+  const result = document.getElementById('result');
+  const backBtn = document.getElementById('backBtn');
+
+  backBtn.addEventListener('click', () => {
+    if (history.length > 1) history.back();
+    else location.href = 'login.html';
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(form);
+    const payload = Object.fromEntries(fd.entries());
+    const res = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (res.ok) {
+      result.textContent = 'Usuario creado:\n' + JSON.stringify(data, null, 2) +
+        '\n\nNOTA: la contraseña se guardó y se devuelve en claro (solo para testing).';
+      result.classList.add('show');   
+    } else {
+      result.textContent = 'Error: ' + (data.error || res.status);
+      result.classList.add('show');    
+    }
+  });
+</script>
+</body>
+</html>

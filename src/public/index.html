@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inventario - CRUD</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Inventario</h1>
+      <nav>
+        <a href="index.html">CRUD</a> | <a href="report.html">Reporte</a>
+        <button id="logout">Salir</button>
+      </nav>
+    </header>
+
+    <section class="form">
+      <h2>Agregar producto</h2>
+      <form id="createForm">
+        <input name="name" placeholder="Nombre" required />
+        <input name="sku" placeholder="SKU" required />
+        <input name="category" placeholder="Categoría" />
+        <input name="price" placeholder="Precio" type="number" step="0.01"/>
+        <input name="stock" placeholder="Stock" type="number" />
+        <button>Crear</button>
+      </form>
+    </section>
+
+    <section>
+      <h2>Listado</h2>
+      <table id="table">
+        <thead><tr><th>ID</th><th>Nombre</th><th>SKU</th><th>Categoría</th><th>Precio</th><th>Stock</th><th>Acciones</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </div>
+
+  <script>
+    const btn = document.getElementById('logout');
+    if (btn) btn.addEventListener('click', () => {
+      localStorage.removeItem('token');
+      location.href = 'login.html';
+    });
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>

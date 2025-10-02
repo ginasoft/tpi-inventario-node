@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reporte de Stock</title>
+  <link rel="stylesheet" href="style.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Reporte de Stock</h1>
+      <nav>
+        <a href="index.html">CRUD</a> | <a href="report.html">Reporte</a>
+        <button id="logout">Salir</button>
+      </nav>
+    </header>
+    
+    <section>
+      <h2>Gráfico de Stock</h2>
+      <canvas id="chart" width="600" height="300"></canvas>
+      <p id="total"></p>
+    </section>
+  </div>
+  <script>
+    if (!localStorage.getItem('token')) location.href = 'login.html';
+    const btn = document.getElementById('logout');
+    if (btn) btn.addEventListener('click', () => {
+      localStorage.removeItem('token');
+      location.href = 'login.html';
+    });
+  </script>
+  <script src="report.js"></script>
+</body>
+</html>
