@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Registro</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="./style.min.css">
 </head>
 <body>
   <div class="container">
@@ -13,6 +13,7 @@
       <nav>
         <a href="index.html">CRUD</a>
         <a href="report.html">Reporte</a>
+        <a href="users.html">Usuarios</a>
       </nav>
     </header>
 
@@ -21,6 +22,10 @@
         <div class="form-grid">
           <input name="username" placeholder="Usuario" required />
           <input name="password" type="password" placeholder="Contraseña" required />
+          <label class="checkbox">
+            <input type="checkbox" name="isAdmin" />
+            <span>Es administrador</span>
+          </label>
           <div class="actions-row">
             <button type="submit" class="btn">Registrar</button>
             <button type="button" class="btn secondary" id="backBtn">Atrás</button>
@@ -45,20 +50,25 @@
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const fd = new FormData(form);
-    const payload = Object.fromEntries(fd.entries());
+    const payload = {
+      username: fd.get('username'),
+      password: fd.get('password'),
+      isAdmin: fd.get('isAdmin') === 'on'
+    };
+
     const res = await fetch('/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
     const data = await res.json();
+
     if (res.ok) {
-      result.textContent = 'Usuario creado:\n' + JSON.stringify(data, null, 2) +
-        '\n\nNOTA: la contraseña se guardó y se devuelve en claro (solo para testing).';
-      result.classList.add('show');   
+      result.textContent = 'Usuario creado:\n' + JSON.stringify(data, null, 2);
+      result.classList.add('show');
     } else {
       result.textContent = 'Error: ' + (data.error || res.status);
-      result.classList.add('show');    
+      result.classList.add('show');
     }
   });
 </script>

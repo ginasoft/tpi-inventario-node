@@ -13,7 +13,6 @@ function makeApp() {
 
 describe('Products API', () => {
   beforeEach(() => {
-    // Limpiar base de datos antes de cada test
     db.clear();
   });
 
@@ -36,7 +35,6 @@ describe('Products API', () => {
   describe('GET /api/products/:id', () => {
     test('should return product by id', async () => {
       const app = makeApp();
-      // Crear producto primero
       const createRes = await request(app).post('/api/products').send({
         name: 'Test Product', sku: 'T-001', category: 'Test', price: 100, stock: 5
       });
@@ -173,7 +171,7 @@ describe('Products API', () => {
       expect(res.body).toHaveProperty('id', productId);
       expect(res.body).toHaveProperty('name', 'Updated Product');
       expect(res.body).toHaveProperty('price', 150);
-      expect(res.body).toHaveProperty('sku', 'O-001'); // No cambió
+      expect(res.body).toHaveProperty('sku', 'O-001'); 
     });
 
     test('should update all fields', async () => {

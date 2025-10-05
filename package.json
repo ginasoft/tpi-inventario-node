@@ -6,15 +6,22 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand",
+
+    "build:js": "esbuild src/public/app.js src/public/report.js src/public/users.js --bundle --minify --outdir=dist/public --entry-names=[name].min",
+    "build:css": "esbuild src/public/style.css --minify --outfile=dist/public/style.min.css",
+    "copy:html": "node -e \"const fs=require('fs'),p=['index','report','login','register','users'];fs.mkdirSync('dist/public',{recursive:true});p.forEach(n=>fs.copyFileSync(`src/public/${n}.html`,`dist/public/${n}.html`))\"",
+    "build": "npm run build:js && npm run build:css && npm run copy:html"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
+    "compression": "^1.8.1",
     "cors": "^2.8.5",
-    "express": "^4.19.2",
+    "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
+    "esbuild": "^0.25.10",
     "jest": "^29.7.0",
     "nodemon": "^3.0.1",
     "supertest": "^6.3.4"

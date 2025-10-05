@@ -3,7 +3,6 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 
-// Importar todas las rutas y middleware
 const authRouter = require('./routes_auth');
 const productsRouter = require('./routes_products');
 const { authRequired } = require('./auth_middleware');
@@ -12,18 +11,14 @@ const db = require('./data/db');
 function makeFullApp() {
   const app = express();
   
-  // Configuración completa como en server.js
   app.use(cors());
   app.use(express.json());
   app.use(express.static(path.join(__dirname, 'public')));
   
-  // Rutas de autenticación
   app.use('/api/auth', authRouter);
   
-  // Rutas de productos (con middleware de auth comentado en el código original)
   app.use('/api/products', productsRouter);
   
-  // Endpoint de reportes
   app.get('/api/reports/stock/summary', (req, res) => {
     res.json(db.stockSummary());
   });
@@ -33,7 +28,6 @@ function makeFullApp() {
 
 describe('Integration Tests - Full App', () => {
   beforeEach(() => {
-    // Limpiar ambas bases de datos
     db.clear();
     const users = require('./data/users');
     users.clear();
@@ -43,7 +37,6 @@ describe('Integration Tests - Full App', () => {
     test('should complete full auth flow: register -> login -> access protected resource', async () => {
       const app = makeFullApp();
       
-      // 1. Registrar usuario
       const registerRes = await request(app)
         .post('/api/auth/register')
         .send({ username: 'testuser', password: 'testpass' });
@@ -51,7 +44,6 @@ describe('Integration Tests - Full App', () => {
       expect(registerRes.status).toBe(201);
       expect(registerRes.body).toHaveProperty('id');
       
-      // 2. Hacer login
       const loginRes = await request(app)
         .post('/api/auth/login')
         .send({ username: 'testuser', password: 'testpass' });
@@ -61,7 +53,6 @@ describe('Integration Tests - Full App', () => {
       
       const token = loginRes.body.token;
       
-      // 3. Acceder a recurso protegido
       const usersRes = await request(app)
         .get('/api/auth/users')
         .set('Authorization', `Bearer ${token}`);
@@ -75,7 +66,6 @@ describe('Integration Tests - Full App', () => {
     test('should create products and generate accurate reports', async () => {
       const app = makeFullApp();
       
-      // Crear varios productos
       const product1 = await request(app)
         .post('/api/products')
         .send({
@@ -110,25 +100,22 @@ describe('Integration Tests - Full App', () => {
       expect(product2.status).toBe(201);
       expect(product3.status).toBe(201);
       
-      // Verificar que se pueden obtener los productos
       const productsRes = await request(app).get('/api/products');
       expect(productsRes.status).toBe(200);
       expect(productsRes.body).toHaveLength(3);
       
-      // Verificar reporte de stock
       const reportRes = await request(app).get('/api/reports/stock/summary');
       expect(reportRes.status).toBe(200);
       expect(reportRes.body.byCategory).toEqual({
         'Electronics': 2,
         'Accessories': 15
       });
-      expect(reportRes.body.totalValue).toBe(2625); // (2*1000) + (10*25) + (5*75) = 2000 + 250 + 375
+      expect(reportRes.body.totalValue).toBe(2625);
     });
 
     test('should handle product lifecycle: create -> update -> delete -> verify report', async () => {
       const app = makeFullApp();
       
-      // 1. Crear producto
       const createRes = await request(app)
         .post('/api/products')
         .send({
@@ -142,28 +129,23 @@ describe('Integration Tests - Full App', () => {
       expect(createRes.status).toBe(201);
       const productId = createRes.body.id;
       
-      // 2. Verificar reporte inicial
       let reportRes = await request(app).get('/api/reports/stock/summary');
       expect(reportRes.body.byCategory).toEqual({ 'Test': 5 });
       expect(reportRes.body.totalValue).toBe(500);
       
-      // 3. Actualizar producto
       const updateRes = await request(app)
         .put(`/api/products/${productId}`)
         .send({ price: 150, stock: 3 });
       
       expect(updateRes.status).toBe(200);
       
-      // 4. Verificar reporte después de actualización
       reportRes = await request(app).get('/api/reports/stock/summary');
       expect(reportRes.body.byCategory).toEqual({ 'Test': 3 });
-      expect(reportRes.body.totalValue).toBe(450); // 3 * 150
+      expect(reportRes.body.totalValue).toBe(450);
       
-      // 5. Eliminar producto
       const deleteRes = await request(app).delete(`/api/products/${productId}`);
       expect(deleteRes.status).toBe(204);
       
-      // 6. Verificar reporte después de eliminación
       reportRes = await request(app).get('/api/reports/stock/summary');
       expect(reportRes.body.byCategory).toEqual({});
       expect(reportRes.body.totalValue).toBe(0);
@@ -174,11 +156,9 @@ describe('Integration Tests - Full App', () => {
     test('should handle invalid endpoints gracefully', async () => {
       const app = makeFullApp();
       
-      // Endpoint inexistente
       const res = await request(app).get('/api/nonexistent');
       expect(res.status).toBe(404);
       
-      // Método no permitido
       const res2 = await request(app).delete('/api/products');
       expect(res2.status).toBe(404);
     });
@@ -186,11 +166,10 @@ describe('Integration Tests - Full App', () => {
     test('should handle malformed JSON gracefully', async () => {
       const app = makeFullApp();
       
-      // JSON malformado
       const res = await request(app)
         .post('/api/products')
         .set('Content-Type', 'application/json')
-        .send('{"name": "test", "sku": "T-001"'); // JSON incompleto
+        .send('{"name": "test", "sku": "T-001"');
       
       expect(res.status).toBe(400);
     });
@@ -200,7 +179,6 @@ describe('Integration Tests - Full App', () => {
     test('should serve static files', async () => {
       const app = makeFullApp();
       
-      // Verificar que se pueden servir archivos estáticos
       const res = await request(app).get('/index.html');
       expect(res.status).toBe(200);
       expect(res.headers['content-type']).toMatch(/text\/html/);

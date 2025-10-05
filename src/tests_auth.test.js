@@ -12,7 +12,6 @@ function makeApp() {
 
 describe('Auth API', () => {
   beforeEach(() => {
-    // Limpiar usuarios antes de cada test
     users.clear();
   });
 
@@ -28,7 +27,6 @@ describe('Auth API', () => {
       expect(res.status).toBe(201);
       expect(res.body).toHaveProperty('id');
       expect(res.body).toHaveProperty('username', 'testuser');
-      // Nota: El endpoint actual devuelve la password, esto debería cambiarse en producción
     });
 
     test('should return 400 when username is missing', async () => {
@@ -55,12 +53,10 @@ describe('Auth API', () => {
       const app = makeApp();
       const userData = { username: 'testuser', password: 'testpass' };
       
-      // Crear usuario primero
       await request(app)
         .post('/api/auth/register')
         .send(userData);
       
-      // Intentar crear el mismo usuario
       const res = await request(app)
         .post('/api/auth/register')
         .send(userData);
@@ -72,7 +68,6 @@ describe('Auth API', () => {
 
   describe('POST /api/auth/login', () => {
     beforeEach(async () => {
-      // Crear usuario de prueba
       const app = makeApp();
       await request(app)
         .post('/api/auth/register')
@@ -135,7 +130,6 @@ describe('Auth API', () => {
     let authToken;
 
     beforeEach(async () => {
-      // Crear usuario y obtener token
       const app = makeApp();
       await request(app)
         .post('/api/auth/register')

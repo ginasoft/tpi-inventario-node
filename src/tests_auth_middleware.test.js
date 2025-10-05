@@ -7,7 +7,6 @@ function makeApp() {
   const app = express();
   app.use(express.json());
   
-  // Endpoint protegido para testing
   app.get('/protected', authRequired, (req, res) => {
     res.json({ message: 'Access granted', user: req.user });
   });
@@ -79,7 +78,7 @@ describe('Auth Middleware', () => {
 
     test('should reject request with expired token', async () => {
       const app = makeApp();
-      const token = jwt.sign({ sub: 1, username: 'testuser' }, JWT_SECRET, { expiresIn: '-1h' }); // Token expirado
+      const token = jwt.sign({ sub: 1, username: 'testuser' }, JWT_SECRET, { expiresIn: '-1h' });
       
       const res = await request(app)
         .get('/protected')

@@ -4,14 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Inventario - CRUD</title>
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="./style.min.css">
 </head>
 <body>
   <div class="container">
     <header>
       <h1>Inventario</h1>
       <nav>
-        <a href="index.html">CRUD</a> | <a href="report.html">Reporte</a>
+        <a href="index.html">CRUD</a> | <a href="report.html">Reporte</a> | <a href="users.html" id="usersLink" style="display:none">Usuarios</a>
         <button id="logout">Salir</button>
       </nav>
     </header>
@@ -38,12 +38,18 @@
   </div>
 
   <script>
-    const btn = document.getElementById('logout');
-    if (btn) btn.addEventListener('click', () => {
-      localStorage.removeItem('token');
-      location.href = 'login.html';
-    });
+    (function(){
+      const usersLink = document.getElementById('usersLink');
+      const isAdmin = localStorage.getItem('isAdmin') === '1';
+      if (isAdmin && usersLink) usersLink.style.display = '';
+      const btn = document.getElementById('logout');
+      if (btn) btn.addEventListener('click', () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('isAdmin');
+        location.href = 'login.html';
+      });
+    })();
   </script>
-  <script src="app.js"></script>
+  <script src="./app.min.js" defer></script>
 </body>
 </html>

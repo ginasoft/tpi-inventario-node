@@ -1,17 +1,17 @@
 [
   {
     "id": 1,
-    "name": "Cheap Item",
+    "name": "Cable USB-C",
     "sku": "C-001",
-    "category": "Misc",
+    "category": "Accesorios",
     "price": 9.99,
     "stock": 3
   },
   {
     "id": 2,
-    "name": "Expensive Item",
+    "name": "Auriculares Bluetooth",
     "sku": "E-001",
-    "category": "Misc",
+    "category": "Accesorios",
     "price": 199.99,
     "stock": 1
   }
