@@ -60,11 +60,19 @@ function nextId() {
 module.exports = {
   getAll: () => users,
   findByUsername: (username) => users.find(u => u.username === username),
+  findById: (id) => users.find(u => u.id === Number(id)),
   create: ({ username, password, isAdmin = false }) => {
     const newUser = { id: nextId(), username, password, isAdmin: !!isAdmin };
     users.push(newUser);
     save();
     return newUser;
+  },
+  updatePassword: (id, newPassword) => {
+    const user = users.find(u => u.id === Number(id));
+    if (!user) return null;
+    user.password = String(newPassword ?? '');
+    save();
+    return { id: user.id, username: user.username, isAdmin: !!user.isAdmin };
   },
   clear: () => {
     users = [];

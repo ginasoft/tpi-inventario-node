@@ -34,11 +34,23 @@ router.post('/login', (req, res) => {
   res.json({ token, isAdmin: !!user.isAdmin });
 });
 
-const { authRequired } = require('./auth_middleware');
+const { authRequired, adminRequired } = require('./auth_middleware');
 
 router.get('/users', authRequired, (req, res) => {
   const safe = users.getAll().map(u => ({ id: u.id, username: u.username, isAdmin: !!u.isAdmin }));
   res.json(safe);
+});
+
+router.put('/users/:id/password', authRequired, adminRequired, (req, res) => {
+  const { id } = req.params;
+  const { password } = req.body || {};
+  if (!password || typeof password !== 'string' || password.length < 1) {
+    return res.status(400).json({ error: 'Nueva contraseña requerida' });
+  }
+  const existing = users.findById(id);
+  if (!existing) return res.status(404).json({ error: 'Usuario no encontrado' });
+  users.updatePassword(id, password);
+  res.json({ ok: true });
 });
 
 module.exports = router;

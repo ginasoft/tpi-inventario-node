@@ -17,4 +17,10 @@ function authRequired(req, res, next) {
   }
 }
 
-module.exports = { authRequired };
+function adminRequired(req, res, next) {
+  if (!req.user) return res.status(401).json({ error: 'Token requerido' });
+  if (!req.user.isAdmin) return res.status(403).json({ error: 'Solo administradores' });
+  next();
+}
+
+module.exports = { authRequired, adminRequired };
