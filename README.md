@@ -55,15 +55,15 @@ Los archivos estáticos se sirven desde `dist/public`. CSS y JS con cache prolon
 
 ## Scripts
 ```bash
-npm start        # producción (requiere build)
-npm run dev      # desarrollo con nodemon
+npm start         # producción (requiere build)
+npm run dev       # desarrollo con nodemon
 
-npm run build    # build completo (JS+CSS+HTML)
-npm run build:js # bundle/minify JS a dist/public/*.min.js
-npm run build:css# minify CSS a dist/public/style.min.css
-npm run copy:html# copia HTML a dist/public/*.html
+npm run build     # build completo (JS+CSS+HTML)
+npm run build:js  # bundle/minify JS a dist/public/*.min.js
+npm run build:css # minify CSS a dist/public/style.min.css
+npm run copy:html # copia HTML a dist/public/*.html
 
-npm test         # ejecutar pruebas
+npm test          # ejecutar pruebas
 ```
 
 ---
