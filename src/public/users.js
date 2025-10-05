@@ -41,48 +41,18 @@
       tbody.innerHTML = '';
       if (!users || users.length === 0) {
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td colspan="3">No hay usuarios.</td>`;
+        tr.innerHTML = `<td colspan="2">No hay usuarios.</td>`;
         tbody.appendChild(tr);
         return;
       }
-      const isAdmin = localStorage.getItem('isAdmin') === '1';
       users.forEach((u, i) => {
         const id = u.id ?? (i + 1);
         const username = u.username ?? u.user ?? '(sin usuario)';
         const tr = document.createElement('tr');
-        const actions = isAdmin ? `<button class="btn small" data-action="pwd" data-id="${id}" data-username="${escapeHtml(username)}">Cambiar contraseña</button>` : '';
-        tr.innerHTML = `<td>${id}</td><td>${escapeHtml(username)}</td><td>${actions}</td>`;
+        tr.innerHTML = `<td>${id}</td><td>${escapeHtml(username)}</td>`;
         tbody.appendChild(tr);
       });
 
-      if (isAdmin) {
-        tbody.querySelectorAll('button[data-action="pwd"]').forEach(btn => {
-          btn.addEventListener('click', async (e) => {
-            const userId = e.currentTarget.getAttribute('data-id');
-            const userName = e.currentTarget.getAttribute('data-username');
-            const newPwd = prompt(`Nueva contraseña para ${userName}:`);
-            if (newPwd == null) return; // cancel
-            const trimmed = newPwd.trim();
-            if (!trimmed) { alert('La contraseña no puede ser vacía'); return; }
-            try {
-              const res = await fetch(`/api/auth/users/${userId}/password`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json', ...authHeaders() },
-                body: JSON.stringify({ password: trimmed })
-              });
-              if (!res.ok) {
-                const data = await res.json().catch(() => ({}));
-                alert(data.error || 'Error actualizando contraseña');
-              } else {
-                alert('Contraseña actualizada');
-              }
-            } catch (err) {
-              console.error(err);
-              alert('Error de red');
-            }
-          });
-        });
-      }
     }
   
     document.addEventListener('DOMContentLoaded', loadUsers);

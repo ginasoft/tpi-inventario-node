@@ -4,5 +4,11 @@
     "username": "testuser",
     "password": "testpass",
     "isAdmin": false
+  },
+  {
+    "id": 2,
+    "username": "admin",
+    "password": "admin",
+    "isAdmin": true
   }
 ]
