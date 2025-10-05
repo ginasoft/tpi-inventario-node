@@ -52,6 +52,10 @@ module.exports = {
     save();
     return true;
   },
+  clear: () => {
+    products = [];
+    save();
+  },
   stockSummary: () => {
     const byCategory = {};
     let totalValue = 0;

@@ -1,26 +1,18 @@
 [
   {
-    "id": 3,
-    "name": "Monitor 24\"",
-    "sku": "MN-24-200",
-    "category": "Displays",
-    "price": 210000,
-    "stock": 9
+    "id": 1,
+    "name": "Cheap Item",
+    "sku": "C-001",
+    "category": "Misc",
+    "price": 9.99,
+    "stock": 3
   },
   {
-    "id": 4,
-    "name": "Teclado Mecánico",
-    "sku": "KB-MECH-77",
-    "category": "Accesorios",
-    "price": 95000,
-    "stock": 15
-  },
-  {
-    "id": 5,
-    "name": "Mouse",
-    "sku": "MO-500-100",
-    "category": "Periféricos",
-    "price": 500,
-    "stock": 20
+    "id": 2,
+    "name": "Expensive Item",
+    "sku": "E-001",
+    "category": "Misc",
+    "price": 199.99,
+    "stock": 1
   }
 ]

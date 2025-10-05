@@ -38,5 +38,9 @@ module.exports = {
     users.push(newUser);
     save();
     return newUser;
+  },
+  clear: () => {
+    users = [];
+    save();
   }
 };
