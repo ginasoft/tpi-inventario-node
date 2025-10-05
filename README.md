@@ -3,8 +3,7 @@ Aplicación web simple de **inventario** con:
 - **CRUD de productos** (ABM completo)
 - **Pantalla de reporte** (stock por categoría y valor total)
 - **Autenticación** con registro, login y JWT
----
-
+  
 ---
 
 ## Novedades / Cambios realizados
