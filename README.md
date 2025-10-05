@@ -2,7 +2,7 @@
 Aplicación web simple de **inventario** con:
 - **CRUD de productos** (ABM completo)
 - **Pantalla de reporte** (stock por categoría y valor total)
-- **Autenticación opcional** con registro, login y JWT
+- **Autenticación** con registro, login y JWT
 
 ---
 
@@ -80,12 +80,12 @@ Base URL: `/api/auth`
 
 - **POST** `/api/auth/register` — Registra usuario
 ```json
-{ "username": "nati", "password": "1234" }
+{ "username": "123", "password": "123" }
 ```
 
 - **POST** `/api/auth/login` — Devuelve JWT
 ```json
-{ "token": "eyJhbGciOi..." }
+{ "token": "secret..." }
 ```
 
 - **GET** `/api/auth/users` — Lista usuarios (protegido)
@@ -107,7 +107,7 @@ Authorization: Bearer <token>
 1. Crear usuario en `register.html`
 2. Iniciar sesión en `login.html` (se guarda el JWT en `localStorage`)
 3. Usar `index.html` para el CRUD y `report.html` para el reporte
-4. (Opcional) Cerrar sesión quitando el token de `localStorage`
+4. Cerrar sesión quitando el token de `localStorage`
 
 ---
 
@@ -134,22 +134,4 @@ src/
     report.js
 tests_products.test.js
 package.json
-```
-
----
-
-## Entrega
-- **No incluir `node_modules`** (usar `.gitignore`)
-- Entregar comprimido en **.zip** (no .rar)
-- Tamaño máximo: **< 3 MB**
-
----
-
-## Optimización (opcional)
-Si querés minificar y servir comprimido:
-- Build con **esbuild** a `dist/` (JS/CSS minificados)
-- Express con **compression()** para gzip
-```bash
-npm run build
-npm start
 ```
